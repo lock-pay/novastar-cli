@@ -1,0 +1,38 @@
+# Novastar CLI
+
+Novastar CLI is a command-line tool designed to simplify and automate tasks for developers. It provides a set of utilities to streamline workflows and enhance productivity.
+
+## Setup
+
+To install Novastar CLI, use the following command:
+
+```bash
+go build -o novastar
+```
+
+## Usage
+
+Run the CLI tool using the `novastar` command:
+
+```bash
+./novastar [options]
+```
+
+For a list of available commands and options, use:
+
+```bash
+novastar --help
+```
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request with a detailed description of your changes.
+
+## License
+
+This project is licensed under the MIT License.
+I am not related to Novastar or any of its products. This CLI is an independent tool created to assist developers in their tasks and make configuration accessible to Unix-like systems.
