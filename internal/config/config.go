@@ -7,14 +7,21 @@ import (
 )
 
 type Config struct {
-	Username            string `json:"username"`
-	Password            string `json:"password"`
-	IpAddress           string `json:"ip_address"`
-	Port                int    `json:"port"`
-	Token               string `json:"token"`
-	ClientName          string `json:"client_name"`
-	SerialNumber        string `json:"serial_number"`
-	TokenExpirationDate string `json:"token_expiratio_date"` // Timestamp of the last login
+	Username            string    `json:"username"`
+	Password            string    `json:"password"`
+	IpAddress           string    `json:"ip_address"`
+	Port                int       `json:"port"`
+	Token               string    `json:"token"`
+	ClientName          string    `json:"client_name"`
+	SerialNumber        string    `json:"serial_number"`
+	TokenExpirationDate string    `json:"token_expiratio_date"` // Timestamp of the last login
+	Files               FilePaths `json:"files"`                // Map of file names to their paths
+}
+
+type FilePaths struct {
+	Firmware         string `json:"firmware"`
+	ScreenConnection string `json:"screen_connection"`
+	ReceptionCard    string `json:"reception_card"`
 }
 
 type ConfigManager struct {

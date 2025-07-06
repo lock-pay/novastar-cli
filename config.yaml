@@ -6,3 +6,7 @@ token: ""
 client_name: NovaStar-CLI
 serial_number: ""
 token_expiration_date: ""
+files:
+  - firmware: "./data/firmware"
+  - screen_connection: "./data/screen_connection"
+  - reception_card: "./data/reception_card"
