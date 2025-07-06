@@ -6,9 +6,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 
+	"novastar-cli/internal/client"
 	conf "novastar-cli/internal/config"
 
 	"github.com/spf13/cobra"
@@ -31,16 +30,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(infoCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// infoCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// infoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func ExecuteInfo() {
@@ -56,29 +45,13 @@ func ExecuteInfo() {
 	url := fmt.Sprintf("https://%s:%d/terminal/core/v2/device/info", config.IpAddress, config.Port)
 	method := "GET"
 
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, nil)
-
+	data, err := client.Request(nil, url, method, config.Token)
 	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	req.Header.Add("Authorization", config.Token)
-
-	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error making request:", err)
 		return
 	}
 	var infoResponse InfoResponse
-	err = json.Unmarshal(body, &infoResponse)
+	err = json.Unmarshal(data, &infoResponse)
 	if err != nil {
 		fmt.Println("Error unmarshaling response:", err)
 		return

@@ -6,11 +6,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
+	"novastar-cli/internal/client"
 	"novastar-cli/internal/config"
-	"novastar-cli/internal/response"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -64,48 +61,15 @@ func ExecuteLogin(configManager *config.ConfigManager, serial_Number, ipAddress 
 		"clientName": config.ClientName,
 	}
 
-	payloadBytes, err := json.Marshal(payloadData)
-	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
-		return
-	}
-
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, strings.NewReader(string(payloadBytes)))
+	data, err := client.Request(payloadData, url, method, "")
 
 	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	req.Header.Add("Content-Type", "application/json")
-
-	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	responseWrapper := response.ResponseWrapper{}
-	err = json.Unmarshal(body, &responseWrapper)
-	if err != nil {
-		fmt.Println("Error unmarshaling response:", err)
-		return
-	}
-
-	if responseWrapper.Code != 0 {
-		fmt.Printf("Login failed: %s\n", responseWrapper.Message)
+		fmt.Println("Error making request:", err)
 		return
 	}
 
 	var loginResponse LoginResponse
-	err = json.Unmarshal(responseWrapper.Data, &loginResponse)
+	err = json.Unmarshal(data, &loginResponse)
 	if err != nil {
 		fmt.Println("Error unmarshaling login response:", err)
 		return
